@@ -1,5 +1,6 @@
 import json
 import os
+
 from googleapiclient.discovery import build
 
 api_key = "AIzaSyAWvYvv5cT7KYlK-WtJSVA0CEfw_D02ZkE"
@@ -12,6 +13,7 @@ class Channel:
         self.channel_id = channel_id
         result = self.get_service().channels().list(id=self.channel_id, part="snippet,contentDetails,statistics").execute()
         raw_data = result["items"][0]
+        print(raw_data)
         self.title = raw_data['snippet']['title']
         self.description = raw_data['snippet']['description']
         self.url = f"https://www.youtube.com/channel/{self.channel_id}"
@@ -19,7 +21,8 @@ class Channel:
         self.video_count = int(raw_data['statistics']['videoCount'])
         self.view_count = int(raw_data['statistics']['viewCount'])
 
-    def get_service(self):
+    @classmethod
+    def get_service(cls):
         service = build('youtube', 'v3', developerKey=api_key)
         return service
 
@@ -33,6 +36,23 @@ class Channel:
         print(f"Количество подписчиков: {self.subscribers}")
         print(f"Количество видео: {self.video_count}")
         print(f"Общее количество просмотров: {self.view_count}")
+
+    def to_json(self,filename):
+        """ Cохраняет в файл значения атрибутов экземпляра `Channel"""
+        inform = {"Название канала": self.title,
+                  "Описание канала": self.description,
+                  "Ссылка на канал": self.url,
+                  "Количество подписчиков": self.subscribers,
+                  "Количество видео": self.video_count,
+                  "Общее количество просмотров": self.view_count}
+        
+
+        with open (filename, "w") as file:
+            json.dump(inform, file)
+
+
+
+
 
 
 
