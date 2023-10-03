@@ -1,19 +1,17 @@
 import json
-import os
-
 from googleapiclient.discovery import build
+from src.utils import get_key
 
-api_key = "AIzaSyAWvYvv5cT7KYlK-WtJSVA0CEfw_D02ZkE"
+
 class Channel:
     """Класс для ютуб-канала"""
-
+    api_key = get_key()
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.channel_id = channel_id
         result = self.get_service().channels().list(id=self.channel_id, part="snippet,contentDetails,statistics").execute()
         raw_data = result["items"][0]
-        print(raw_data)
         self.title = raw_data['snippet']['title']
         self.description = raw_data['snippet']['description']
         self.url = f"https://www.youtube.com/channel/{self.channel_id}"
@@ -21,12 +19,40 @@ class Channel:
         self.video_count = int(raw_data['statistics']['videoCount'])
         self.view_count = int(raw_data['statistics']['viewCount'])
 
+    def __str__(self):
+        return f"{self.title} -  {self.url}"
+
+    def __add__(self, other):
+        """Метод сложения подписчиков"""
+        return self.subscribers + other.subscribers
+
+    def __sub__(self, other):
+        """Метод вычитания подписчиков"""
+        return self.subscribers - other.subscribers
+
+    def __eq__(self, other):
+        return self.subscribers == other.subscribers
+
+    def __ne__(self, other):
+        return self.subscribers != other.subscribers
+
+    def __lt__(self, other):
+        return self.subscribers < other.subscribers
+
+    def __le__(self, other):
+        return self.subscribers <= other.subscribers
+
+    def __gt__(self, other):
+        return self.subscribers > other.subscribers
+
+    def __ge__(self, other):
+        return self.subscribers >= other.subscribers
+
+
     @classmethod
     def get_service(cls):
         service = build('youtube', 'v3', developerKey=api_key)
         return service
-
-
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
@@ -49,7 +75,6 @@ class Channel:
 
         with open (filename, "w") as file:
             json.dump(inform, file)
-
 
 
 
