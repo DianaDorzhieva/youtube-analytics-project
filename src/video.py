@@ -1,6 +1,6 @@
 import json
 from googleapiclient.discovery import build
-from src.utils import  get_key
+from src.utils import get_key
 class Video:
 
     api_key = get_key()
@@ -14,7 +14,6 @@ class Video:
         self.url = raw_data['thumbnails']['default']['url']
         self.view_count = result['items'][0]['statistics']['viewCount']
         self.like_count = result['items'][0]['statistics']['likeCount']
-
 
     @classmethod
     def get_video(cls):
