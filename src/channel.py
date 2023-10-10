@@ -68,7 +68,7 @@ class Channel:
 
     @classmethod
     def get_service(cls):
-        service = build('youtube', 'v3', developerKey=Channel.api_key)
+        service = build('youtube', 'v3', developerKey=cls.api_key)
         return service
 
     def print_info(self) -> None:
