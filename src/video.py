@@ -1,4 +1,3 @@
-import json
 from googleapiclient.discovery import build
 from src.utils import get_key
 class Video:
