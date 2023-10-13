@@ -38,6 +38,7 @@ class PlayList:
                 best_video = video_url
         return print(f"Видео с самым большим количеством лайков {max_like} - {best_video}")
 
+    @property
     def total_duration(self):
         count_hour = 0
         count_min = 0
@@ -51,7 +52,6 @@ class PlayList:
                                                            id=','.join(video_ids)
                                                            ).execute()
         for video in video_response['items']:
-            # YouTube video duration is in ISO 8601 format
             iso_8601_duration = video['contentDetails']['duration']
             duration = str(isodate.parse_duration(iso_8601_duration))
             format = '%H:%M:%S'
@@ -67,7 +67,7 @@ class PlayList:
                                    hours=count_hour,
                                    weeks=0)
 
-        return print(f"Общая продолжительность плеейлиста составит {delta}")
+        return delta
 
 
 
