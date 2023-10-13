@@ -1,6 +1,6 @@
 import json
 from googleapiclient.discovery import build
-from src.utils import  get_key
+from src.utils import get_key
 
 
 
@@ -13,6 +13,7 @@ class Channel:
         self.channel_id = channel_id
         result = self.get_service().channels().list(id=self.channel_id,
                                                     part="snippet,contentDetails,statistics").execute()
+        print(result)
         raw_data = result["items"][0]
         self.title = raw_data['snippet']['title']
         self.description = raw_data['snippet']['description']
@@ -91,7 +92,6 @@ class Channel:
 
         with open(filename, "w") as file:
             json.dump(inform, file)
-
 
 
 
