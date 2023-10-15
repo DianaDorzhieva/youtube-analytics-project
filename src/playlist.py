@@ -33,7 +33,6 @@ class PlayList:
             video_response = self.get_playlist().videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                                id=i).execute()
             video_like = int(video_response['items'][0]['statistics']['likeCount'])
-            video_url = video_response['items'][0]['snippet']['thumbnails']['default']['url']
             if video_like > max_like:
                 max_like = video_like
                 best_video = i
